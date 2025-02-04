@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import Dashboard from './pages/Dashboard'
 
 
 
@@ -7,7 +8,7 @@ function App() {
 
   return (
     <>
-      <h1>helllo</h1>
+      <Dashboard />
     </>
   )
 }
