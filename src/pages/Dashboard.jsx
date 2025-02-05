@@ -4,16 +4,23 @@ import Sidebar from '../components/Sidebar'
 import Stats from '../components/Stats'
 import Headerbar from '../components/Headerbar'
 import { Background, Controls, ReactFlow, useNodesState, useEdgesState, addEdge } from '@xyflow/react'
+import CustomNode from '../components/CustomNode'
+
+
 import '@xyflow/react/dist/style.css';
 
 
 
 const initialNodes = [
-    { id: '1', position: { x: 0, y: 0 }, data: { label: '1' } },
+    { id: '1', type:'custom', position: { x: 0, y: 0 }, data: { label: '1' } },
     { id: '2', position: { x: 0, y: 100 }, data: { label: '2' } },
     { id: '3', position: { x: 0, y: 200 }, data: { label: '3' } },
 ];
 const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
+
+const nodeTypes = {
+    custom: CustomNode,
+};
 
 
 const Dashboard = () => {
@@ -40,6 +47,7 @@ const Dashboard = () => {
                         onNodesChange={onNodesChange}
                         onEdgesChange={onEdgesChange}
                         onConnect={onConnect}
+                        nodeTypes={nodeTypes}
                     >
 
                         <Controls />

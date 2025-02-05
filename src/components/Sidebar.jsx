@@ -11,7 +11,7 @@ const tables = [
 function Sidebar() {
   return (
     <div className="flex min-h-screen w-[360px] flex-col gap-y-5 overflow-y-auto bg-white px-3 border-r border-gray-200">
-      <div className="pt-5">
+      <div className="pt-3">
         <TableLayout />
       </div>
      
