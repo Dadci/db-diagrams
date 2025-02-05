@@ -17,7 +17,7 @@ const Navbar = () => {
             <div className="mx-auto px-4">
                 <div className="flex h-16 items-center justify-between">
                     <div className="flex items-center">
-                        <div className="flex-shrink-0 w-[340px]">
+                        <div className="flex-shrink-0 w-[360px]">
                             <img className="h-6 w-auto" src={logo} alt="Logo" />
                         </div>
                         <div className="hidden md:flex gap-12 md:items-center">

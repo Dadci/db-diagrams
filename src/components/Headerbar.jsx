@@ -3,11 +3,11 @@ import React from 'react'
 const Headerbar = () => {
     return (
         <div className='flex items-center bg-white border-b border-gray-200'>
-            <div className='w-[340px] border-r border-gray-200'>
+            <div className='w-[360px] border-r border-gray-200'>
                 <div className='pl-6 pr-4 py-5'>
                     <div className='flex items-center justify-between'>
                         <h2 className=' font-semibold text-gray-900'>Tables</h2>
-                        <button className='px-4 py-1 border shadow-sm border-teal-600 text-sm font-medium bg-teal-500 text-white rounded-lg'>+ Add Table</button>
+                        <button className='px-4 py-1 border shadow-sm border-teal-600 text-sm font-medium   bg-teal-500 text-white rounded-md'>+ Add Table</button>
                     </div>
                 </div>
             </div>
