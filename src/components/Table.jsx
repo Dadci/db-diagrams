@@ -27,7 +27,7 @@ const Table = () => {
     }
 
     return (
-        <div className={ `flex flex-col px-3 py-3 bg-gray-50 rounded-xl border border-gray-200 ${!isOpen ? 'bg-white border-none' : ''}` }>
+        <div className={ `flex flex-col px-3 py-3 bg-gray-50 rounded-xl border border-gray-200 ` }>
             <div className='flex items-center justify-between cursor-pointer' onClick={handleOpen}>
                 <div className='flex items-center gap-2'>
                     <span className='w-1 h-4 rounded-full bg-purple-600'></span>

@@ -12,7 +12,7 @@ import '@xyflow/react/dist/style.css';
 
 
 const initialNodes = [
-    { id: '1', type:'custom', position: { x: 0, y: 0 }, data: { label: '1' } },
+    { id: '1', type: 'custom', position: { x: 0, y: 0 }, data: { label: '1' } },
     { id: '2', position: { x: 0, y: 100 }, data: { label: '2' } },
     { id: '3', position: { x: 0, y: 200 }, data: { label: '3' } },
 ];
@@ -39,7 +39,7 @@ const Dashboard = () => {
             <Headerbar />
             <div className="flex flex-1 overflow-hidden">
                 <Sidebar />
-                <main className="flex-1 w-full h-full bg-gray-50 overflow-none">
+                <main className="flex-1 w-full h-full bg-[#fefefe] overflow-none">
 
                     <ReactFlow
                         nodes={nodes}
