@@ -2,6 +2,8 @@ import React from 'react'
 import { EllipsisVerticalIcon } from '@heroicons/react/16/solid'
 import { WindowIcon } from '@heroicons/react/24/outline'
 import { useState } from 'react'
+import { addField } from '../store/tableSlice'
+import { useDispatch } from 'react-redux'
 
 const Table = () => {
     const [isOpen, setIsOpen] = useState(false)
@@ -19,7 +21,7 @@ const Table = () => {
     }
 
     const addField = () => {
-        setNewField([...newField, { name: '', type: '' }])
+        setNewField ([...newField, { name: '', type: '' }])
     }
 
     const handleOpen = () => {
