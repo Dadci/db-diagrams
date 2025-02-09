@@ -16,6 +16,7 @@ const CustomNode = ({ data }) => {
     const headerBgClass = `bg-${table.color}/10`;
     const textClass = `text-${table.color}`;
     const handleBgClass = `!bg-${table.color}`;
+    const handleBorderClass = `!border-${table.color}`;
 
 
     return (
