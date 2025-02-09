@@ -9,6 +9,16 @@ export default {
   },
   plugins: [],
 
-  
+  safelist: [
+    {
+      pattern: /^bg-(purple|blue|green|red|yellow|pink|indigo|teal|orange|cyan)-(500|600)(\/10)?$/,
+      variants: ['hover'],
+    },
+    {
+      pattern: /^text-(purple|blue|green|red|yellow|pink|indigo|teal|orange|cyan)-(500|600)$/,
+    },
+  ],
+
+
 }
 

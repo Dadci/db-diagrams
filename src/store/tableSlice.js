@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
+import { getRandomTailwindColor } from '../utils/getRandomTailwindColor'
 
 const tableSlice = createSlice({
   name: 'tables',
@@ -11,8 +12,12 @@ const tableSlice = createSlice({
       state.tables.push({
         id: Date.now().toString(),
         name: action.payload.name,
+        color:getRandomTailwindColor(),
         fields: []
       })
+    },
+    deleteTable: (state, action) => {
+      state.tables = state.tables.filter(t => t.id !== action.payload)
     },
     addField: (state, action) => {
       const table = state.tables.find(t => t.id === action.payload.tableId)
@@ -24,11 +29,18 @@ const tableSlice = createSlice({
         })
       }
     },
+    saveTable: (state, action) => {
+      const table = state.tables.find(t => t.id === action.payload.tableId)
+      if (table) {
+        table.name = action.payload.name
+        table.fields = action.payload.fields
+      }
+    },
     setActiveTable: (state, action) => {
       state.activeTable = action.payload
     }
   }
 })
 
-export const { addTable, addField, setActiveTable } = tableSlice.actions
+export const { addTable, deleteTable, addField, setActiveTable, saveTable } = tableSlice.actions
 export default tableSlice.reducer

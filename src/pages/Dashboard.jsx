@@ -1,22 +1,16 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import Navbar from '../components/Navbar'
 import Sidebar from '../components/Sidebar'
 import Stats from '../components/Stats'
 import Headerbar from '../components/Headerbar'
 import { Background, Controls, ReactFlow, useNodesState, useEdgesState, addEdge } from '@xyflow/react'
 import CustomNode from '../components/CustomNode'
+import { useSelector } from 'react-redux'
 
 
 import '@xyflow/react/dist/style.css';
 
 
-
-const initialNodes = [
-    { id: '1', type: 'custom', position: { x: 0, y: 0 }, data: { label: '1' } },
-    { id: '2', position: { x: 0, y: 100 }, data: { label: '2' } },
-    { id: '3', position: { x: 0, y: 200 }, data: { label: '3' } },
-];
-const initialEdges = [{ id: 'e1-2', source: '1', target: '2' }];
 
 const nodeTypes = {
     custom: CustomNode,
@@ -24,8 +18,28 @@ const nodeTypes = {
 
 
 const Dashboard = () => {
-    const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-    const [edges, setEdges, onEdgesChange] = useEdgesState(initialEdges);
+    const [nodes, setNodes, onNodesChange] = useNodesState([]);
+    const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+
+    const tables = useSelector(state => state.tables.tables)
+
+    useEffect(() => {
+
+        if (!tables.length) return;
+        const tableNodes = tables.map((table, index) => ({
+            id: table.id,
+            type: 'custom',
+            position: {
+                x: (index % 3) * 300 + 50,
+                y: Math.floor(index / 3) * 200 + 50
+            },
+            data: {
+                id: table.id
+            }
+        }));
+
+        setNodes(tableNodes);
+    }, [tables, setNodes]);
 
     const onConnect = useCallback(
         (params) => setEdges((eds) => addEdge(params, eds)),
@@ -48,6 +62,7 @@ const Dashboard = () => {
                         onEdgesChange={onEdgesChange}
                         onConnect={onConnect}
                         nodeTypes={nodeTypes}
+                        fitView
                     >
 
                         <Controls />
