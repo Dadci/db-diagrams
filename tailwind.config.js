@@ -17,6 +17,9 @@ export default {
     {
       pattern: /^text-(purple|blue|green|red|yellow|pink|indigo|teal|orange|cyan)-(500|600)$/,
     },
+    {
+      pattern: /^border-(purple|blue|green|red|yellow|pink|indigo|teal|orange|cyan)-(500|600)(\/30)?$/,
+    },
   ],
 
 

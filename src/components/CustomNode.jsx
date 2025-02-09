@@ -2,7 +2,6 @@ import React, { memo } from 'react';
 import { Handle, Position } from '@xyflow/react';
 import { TableCellsIcon } from '@heroicons/react/24/outline';
 import { useSelector } from 'react-redux';
-import clsx from 'clsx';
 
 
 const CustomNode = ({ data }) => {
@@ -14,13 +13,10 @@ const CustomNode = ({ data }) => {
     if (!table) return null;
 
     const headerBgClass = `bg-${table.color}/10`;
-    const textClass = `text-${table.color}`;
-    const handleBgClass = `!bg-${table.color}`;
-    const handleBorderClass = `!border-${table.color}`;
-
+    const BorderClass = `border-${table.color}/30`;
 
     return (
-        <div className={`border ${headerBgClass} rounded-md w-64 flex-col shadow-md p-[2px] bg-white`}>
+        <div className={`border ${BorderClass} rounded-md w-64 flex-col shadow-md p-[2px] bg-white`}>
             <div className={`${headerBgClass} font-semibold p-2 text-${table.color} rounded-t-[4px] flex items-center gap-1`}>
                 <TableCellsIcon className="w-5 h-5" />
                 <p className='text-sm'>{table.name}</p>
