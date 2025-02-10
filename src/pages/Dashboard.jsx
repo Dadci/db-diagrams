@@ -1,74 +1,33 @@
-import React, { useCallback, useEffect } from 'react'
 import Navbar from '../components/Navbar'
-import Sidebar from '../components/Sidebar'
-import Stats from '../components/Stats'
-import Headerbar from '../components/Headerbar'
-import { Background, Controls, ReactFlow, useNodesState, useEdgesState, addEdge } from '@xyflow/react'
-import CustomNode from '../components/CustomNode'
+
 import { useSelector } from 'react-redux'
-
-
-import '@xyflow/react/dist/style.css';
-
-
-
-const nodeTypes = {
-    custom: CustomNode,
-};
-
+import AddBtn from '../components/AddBtn'
+import SchemaCard from '../components/SchemaCard'
 
 const Dashboard = () => {
-    const [nodes, setNodes, onNodesChange] = useNodesState([]);
-    const [edges, setEdges, onEdgesChange] = useEdgesState([]);
-
-    const tables = useSelector(state => state.tables.tables)
-
-    useEffect(() => {
-
-        if (!tables.length) return;
-        const tableNodes = tables.map((table, index) => ({
-            id: table.id,
-            type: 'custom',
-            position: {
-                x: (index % 3) * 300 + 50,
-                y: Math.floor(index / 3) * 200 + 50
-            },
-            data: {
-                id: table.id
-            }
-        }));
-
-        setNodes(tableNodes);
-    }, [tables, setNodes]);
-
-    const onConnect = useCallback(
-        (params) => setEdges((eds) => addEdge(params, eds)),
-        [setEdges],
-    );
-
+    const schemas = useSelector(state => state.schemas.schemas)
 
     return (
         <div className="flex flex-col h-screen">
             <Navbar />
-            <Headerbar />
             <div className="flex flex-1 overflow-hidden">
-                <Sidebar />
-                <main className="flex-1 w-full h-full bg-[#fefefe] overflow-none">
+               
+                <main className="flex-1 w-full h-full bg-[#fbfbfb] overflow-none">
+                    <div className='flex items-start justify-between px-8 py-6'>
+                        <div className='flex flex-col items-start gap-2'>
+                            <h1 className='text-xl font-semibold'>Welcome to your Dashboard</h1>
+                            <p className='text-gray-400 text-sm font-normal'>
+                                You have {schemas.length} Schemas
+                            </p>
+                        </div>
+                        <AddBtn />
+                    </div>
 
-                    <ReactFlow
-                        nodes={nodes}
-                        edges={edges}
-                        onNodesChange={onNodesChange}
-                        onEdgesChange={onEdgesChange}
-                        onConnect={onConnect}
-                        nodeTypes={nodeTypes}
-                        fitView
-                    >
-
-                        <Controls />
-                        <Background variant='dots' color="#aaa" gap={12} />
-                    </ReactFlow>
-
+                    <div className='grid grid-cols-6 gap-4 p-6'>
+                        {schemas.map(schema => (
+                            <SchemaCard key={schema.id} schema={schema} />
+                        ))}
+                    </div>
                 </main>
             </div>
         </div>

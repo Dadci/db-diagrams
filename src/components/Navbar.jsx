@@ -5,19 +5,25 @@ import {
 } from '@heroicons/react/24/outline'
 import logo from '../assets/logo.svg'
 import AddBtn from './AddBtn'
+import { useSelector } from 'react-redux'
+
+
 
 const navigation = [
-    { name: 'Overview', href: '#', icon: ChartBarIcon },
-    { name: 'Databases', href: '#', icon: CircleStackIcon, count: '12' },
+    { name: 'Overview', href: '/', icon: ChartBarIcon },
+    { name: 'Databases', href: '#', icon: CircleStackIcon },
 ]
 
 const Navbar = () => {
+
+   const schemas = useSelector(state => state.schemas.schemas)
+
     return (
         <nav className="border-b border-gray-200 bg-white">
             <div className="mx-auto px-4">
                 <div className="flex h-16 items-center justify-between">
                     <div className="flex items-center">
-                        <div className="flex-shrink-0 w-[360px]">
+                        <div className="flex-shrink-0 pr-8 ">
                             <img className="h-5 w-auto" src={logo} alt="Logo" />
                         </div>
                         <div className="hidden md:flex gap-12 md:items-center">
@@ -30,9 +36,9 @@ const Navbar = () => {
                                     >
                                         <item.icon className="h-5 w-5" />
                                         {item.name}
-                                        {item.count && (
+                                        {schemas.length && (
                                             <span className="ml-2 rounded-full bg-gray-100 px-2.5 py-0.5 text-xs text-gray-600 ring-1 ring-gray-200">
-                                                {item.count}
+                                                {schemas.length}
                                             </span>
                                         )}
                                     </a>

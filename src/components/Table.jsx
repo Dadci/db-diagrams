@@ -1,8 +1,8 @@
 import React from 'react'
 import { EllipsisVerticalIcon } from '@heroicons/react/16/solid'
-import { WindowIcon, TrashIcon,CloudArrowUpIcon } from '@heroicons/react/24/outline'
+import { WindowIcon, TrashIcon, CloudArrowUpIcon } from '@heroicons/react/24/outline'
 import { useState } from 'react'
-import { addField, saveTable,deleteTable } from '../store/tableSlice'
+import { addField, saveTable, deleteTableAsync } from '../store/tableSlice'
 import { useDispatch } from 'react-redux'
 
 const Table = ({ tableData }) => {
@@ -37,7 +37,7 @@ const Table = ({ tableData }) => {
     }
 
     const handleDelete = () => {
-        dispatch(deleteTable(tableData.id))
+        dispatch(deleteTableAsync(tableData.id))
     }
 
 
