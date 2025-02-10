@@ -1,28 +1,43 @@
 import React, { useCallback, useEffect } from 'react'
+import { useParams, useNavigate } from 'react-router-dom'
+import { useSelector, useDispatch } from 'react-redux'
+import { Background, Controls, ReactFlow, useNodesState, useEdgesState, addEdge } from '@xyflow/react'
+import { setActiveSchema } from '../store/schemaSlice'
 import Navbar from '../components/Navbar'
 import Sidebar from '../components/Sidebar'
-import Stats from '../components/Stats'
 import Headerbar from '../components/Headerbar'
-import { Background, Controls, ReactFlow, useNodesState, useEdgesState, addEdge } from '@xyflow/react'
 import CustomNode from '../components/CustomNode'
-import { useSelector } from 'react-redux'
-
-
-import '@xyflow/react/dist/style.css';
-
-
+import '@xyflow/react/dist/style.css'
 
 const nodeTypes = {
     custom: CustomNode,
 };
 
-
 const Schema = () => {
+    const { id } = useParams(); // Add this line to get id from URL
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
     const [nodes, setNodes, onNodesChange] = useNodesState([]);
     const [edges, setEdges, onEdgesChange] = useEdgesState([]);
 
-    const tables = useSelector(state => state.tables.tables)
+    // Set active schema when component mounts
+    useEffect(() => {
+        if (id) {
+            dispatch(setActiveSchema(id));
+        }
+    }, [id, dispatch]);
+
+    const tables = useSelector(state =>
+        state.tables.tables.filter(table => table.schemaId === id)
+    );
     const schemas = useSelector(state => state.schemas.schemas)
+    const schema = useSelector(state => state.schemas.schemas.find(s => s.id === id));
+
+    if (!schema) {
+        navigate('/');
+        return null;
+    }
 
     useEffect(() => {
 
@@ -41,6 +56,8 @@ const Schema = () => {
 
         setNodes(tableNodes);
     }, [tables, setNodes]);
+
+
 
     const onConnect = useCallback(
         (params) => setEdges((eds) => addEdge(params, eds)),

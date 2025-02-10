@@ -17,12 +17,11 @@ const schemaSlice = createSlice({
             })
         },
         deleteSchema: (state, action) => {
-            state.schemas = state.schemas.filter(s => s.id !== action.payload)
-            
-            
-
-            
-
+            const schema = state.schemas.find(s => s.id === action.payload);
+            if (schema) {
+                // Dispatch action to delete associated tables
+                state.schemas = state.schemas.filter(s => s.id !== action.payload);
+            }
         },
         setActiveSchema: (state, action) => {
             state.activeSchema = action.payload

@@ -8,12 +8,9 @@ import { useDispatch } from 'react-redux'
 const Table = ({ tableData }) => {
     const [isOpen, setIsOpen] = useState(false)
     const [tableName, setTableName] = useState(tableData.name)
-    const [newField, setNewField] = useState([
-        {
-            name: '',
-            type: ''
-        }
-    ])
+    const [newField, setNewField] = useState(
+        tableData.fields.length > 0 ? tableData.fields : [{ name: '', type: '' }]
+    );
 
     const dispatch = useDispatch()
 
