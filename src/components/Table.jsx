@@ -25,13 +25,15 @@ const Table = ({ tableData }) => {
     }
 
     const handleSave = () => {
+        const currentPosition = tableData.position;
         dispatch(saveTable({
             tableId: tableData.id,
             name: tableName,
-            fields: newField
-        }))
-        setIsOpen(false)
-    }
+            fields: newField,
+            position: currentPosition // Keep the current position
+        }));
+        setIsOpen(false);
+    };
 
     const handleDelete = () => {
         dispatch(deleteTableAsync(tableData.id))

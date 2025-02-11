@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { WindowIcon, TrashIcon, CloudArrowUpIcon, CircleStackIcon } from '@heroicons/react/24/outline'
 import { useDispatch } from 'react-redux'
 import { deleteSchema } from '../store/schemaSlice'
+import { deleteTableAsync, deleteAllTables } from '../store/tableSlice'
 
 const SchemaCard = ({ schema }) => {
     const navigate = useNavigate()
@@ -12,8 +13,14 @@ const SchemaCard = ({ schema }) => {
         navigate(`/schema/${schema.id}`)
     }
 
+    const handleDelete = (e) => {
+        e.stopPropagation()
+        dispatch(deleteSchema(schema.id))
+        dispatch(deleteAllTables(schema.id))
+    }
+
     return (
-        <div 
+        <div
             onClick={handleClick}
             className='flex flex-col items-start gap-2 bg-white cursor-pointer border border-gray-200 hover:border-gray-300 rounded-lg p-4 shadow-sm'
         >
@@ -33,12 +40,9 @@ const SchemaCard = ({ schema }) => {
                         {schema.tables.length} Tables
                     </span>
                 </div>
-                <TrashIcon 
+                <TrashIcon
                     className='w-4 text-gray-500 hover:text-red-400'
-                    onClick={(e) => {
-                        e.stopPropagation()
-                        dispatch(deleteSchema(schema.id))
-                    }}
+                    onClick={handleDelete}
                 />
             </div>
         </div>

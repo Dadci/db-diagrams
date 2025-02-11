@@ -5,11 +5,12 @@ import throttle from 'lodash/throttle'
 import { saveState, loadState } from '../utils/localStorage'
 import schemaReducer from './schemaSlice'
 
+
 export const store = configureStore({
   reducer: {
     tables: tableReducer,
     schemas: schemaReducer
-  
+
   },
   preloadedState: loadState()
 })

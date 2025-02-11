@@ -1,25 +1,26 @@
-import React, { memo } from 'react';
+import React, { memo, useMemo } from 'react';
 import { Handle, Position } from '@xyflow/react';
 import { TableCellsIcon } from '@heroicons/react/24/outline';
 import { useSelector } from 'react-redux';
 
+const selectTableById = (state, id) =>
+    state.tables.tables.find(t => t.id === id);
 
-const CustomNode = ({ data }) => {
-    // Get the table data from the store using the id passed in data
-    const table = useSelector(state =>
-        state.tables.tables.find(t => t.id === data.id)
-    );
+const CustomNode = memo(({ data }) => {
+    const table = useSelector(state => selectTableById(state, data.id));
+
+    const styles = useMemo(() => ({
+        headerBgClass: `bg-${table?.color}/10`,
+        borderClass: `border-${table?.color}/30`
+    }), [table?.color]);
 
     if (!table) return null;
 
-    const headerBgClass = `bg-${table.color}/10`;
-    const BorderClass = `border-${table.color}/30`;
-
     return (
-        <div className={`border ${BorderClass} rounded-md w-64 flex-col shadow-md p-[2px] bg-white`}>
-            <div className={`${headerBgClass} font-semibold p-2 text-${table.color} rounded-t-[4px] flex items-center gap-1`}>
+        <div className={`border ${styles.borderClass} rounded-md w-64 flex-col shadow-md p-[2px] bg-white`}>
+            <div className={`${styles.headerBgClass} font-semibold p-2 text-${table.color} rounded-t-[4px] flex items-center gap-1 drag-handle cursor-move`}>
                 <TableCellsIcon className="w-5 h-5" />
-                <p className='text-sm'>{table.name}</p>
+                <p className="text-sm">{table.name}</p>
             </div>
             <div className='p-2 text-sm text-gray-700 bg-white space-y-2'>
                 {table.fields.map((field, index) => (
@@ -32,16 +33,21 @@ const CustomNode = ({ data }) => {
             <Handle
                 type="target"
                 position={Position.Left}
-                className="!bg-gray-300 border !border-gray-300 "
+                className="!bg-gray-500 !w-3 !h-3 !border-2 !border-white"
+                isValidConnection={(connection) => true}
+                style={{ zIndex: 1 }}
             />
             <Handle
                 type="source"
                 position={Position.Right}
-                className="!bg-gray-300 border !border-gray-300 "
-
+                className="!bg-gray-500 !w-3 !h-3 !border-2 !border-white"
+                isValidConnection={(connection) => true}
+                style={{ zIndex: 1 }}
             />
         </div>
-    )
-};
+    );
+});
 
-export default memo(CustomNode);
+CustomNode.displayName = 'CustomNode';
+
+export default CustomNode;

@@ -43,6 +43,13 @@ const schemaSlice = createSlice({
             if (schema) {
                 // Update any schema-specific table data if needed
             }
+        },
+        updateTablePosition: (state, action) => {
+            const { tableId, position } = action.payload;
+            const table = state.tables.find(t => t.id === tableId);
+            if (table) {
+                table.position = position;
+            }
         }
     }
 })
@@ -53,7 +60,9 @@ export const {
     setActiveSchema,
     addTableToSchema,
     removeTableFromSchema,
-    updateTableInSchema
+    updateTableInSchema,
+    
+    updateTablePosition
 } = schemaSlice.actions
 
 export default schemaSlice.reducer
