@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { addTable } from '../store/unifiedSchemaSlice'
 import { useParams } from 'react-router-dom'
 import { Position } from '@xyflow/react'
+import CodeModal from './CodeModal'
 
 const Headerbar = () => {
+    const [isCodeModalOpen, setIsCodeModalOpen] = useState(false);
     const { id } = useParams();
     const schema = useSelector(state =>
         state.schemas.schemas.find(s => s.id === id)
@@ -34,11 +36,23 @@ const Headerbar = () => {
                 </div>
             </div>
             <div className='flex-1 py-2 px-6'>
-                <div className='flex-col items-center gap-2'>
-                    <h2 className='text-lg font-semibold text-gray-900'>{schema?.title}</h2>
-                    <h3 className='text-gray-400 text-sm font-normal'>{schema?.description}</h3>
+                <div className='flex justify-between items-center'>
+                    <div className='flex-col items-center gap-2'>
+                        <h2 className='text-lg font-semibold text-gray-900'>{schema?.title}</h2>
+                        <h3 className='text-gray-400 text-sm font-normal'>{schema?.description}</h3>
+                    </div>
+                    <button
+                        onClick={() => setIsCodeModalOpen(true)}
+                        className='px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors'
+                    >
+                        Generate Code
+                    </button>
                 </div>
             </div>
+            <CodeModal
+                isOpen={isCodeModalOpen}
+                onClose={() => setIsCodeModalOpen(false)}
+            />
         </div>
     );
 };

@@ -11,3 +11,10 @@
     box-sizing: border-box;
     font-family: 'Urbanist', sans-serif;
 }
+
+.hljs {
+    background: transparent !important;
+    padding: 0 !important;
+    color: #abb2bf;
+    font-family: 'Fira Code', monospace;
+  }
