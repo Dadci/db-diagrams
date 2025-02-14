@@ -4,6 +4,7 @@ import { addTable } from '../store/unifiedSchemaSlice'
 import { useParams } from 'react-router-dom'
 import { Position } from '@xyflow/react'
 import CodeModal from './CodeModal'
+import { CodeBracketIcon } from '@heroicons/react/24/outline'
 
 const Headerbar = () => {
     const [isCodeModalOpen, setIsCodeModalOpen] = useState(false);
@@ -43,8 +44,9 @@ const Headerbar = () => {
                     </div>
                     <button
                         onClick={() => setIsCodeModalOpen(true)}
-                        className='px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors'
+                        className='px-4 py-1.5 bg-indigo-500 border text-sm border-indigo-600 text-white rounded-lg gap-2 hover:bg-indigo-700 transition-colors'
                     >
+                        <CodeBracketIcon className='w-4 inline-block mr-2'  />
                         Generate Code
                     </button>
                 </div>

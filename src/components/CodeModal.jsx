@@ -33,43 +33,69 @@ const CodeModal = ({ isOpen, onClose }) => {
 
     // Add new type mappings
     const typeMapping = {
-        string: {
+        // MongoDB/Mongoose
+        STRING: {
             mongoose: 'String',
             typescript: 'string',
-            prisma: 'String',
-            sequelize: 'DataTypes.STRING',
-            typeorm: 'string'
+            prisma: 'String'
         },
-        number: {
+        NUMBER: {
             mongoose: 'Number',
             typescript: 'number',
-            prisma: 'Int',
-            sequelize: 'DataTypes.INTEGER',
-            typeorm: 'number'
+            prisma: 'Int'
         },
-        date: {
+        DATE: {
             mongoose: 'Date',
             typescript: 'Date',
-            prisma: 'DateTime',
-            sequelize: 'DataTypes.DATE',
-            typeorm: 'Date'
+            prisma: 'DateTime'
         },
-        boolean: {
+        BOOLEAN: {
             mongoose: 'Boolean',
             typescript: 'boolean',
-            prisma: 'Boolean',
-            sequelize: 'DataTypes.BOOLEAN',
-            typeorm: 'boolean'
+            prisma: 'Boolean'
+        },
+        OBJECT_ID: {
+            mongoose: 'Schema.Types.ObjectId',
+            typescript: 'string',
+            prisma: 'String @db.ObjectId'
+        },
+        ARRAY: {
+            mongoose: '[]',
+            typescript: 'any[]',
+            prisma: 'Json'
+        },
+        MIXED: {
+            mongoose: 'Schema.Types.Mixed',
+            typescript: 'any',
+            prisma: 'Json'
+        },
+        DECIMAL: {
+            mongoose: 'Schema.Types.Decimal128',
+            typescript: 'number',
+            prisma: 'Decimal'
+        },
+        MAP: {
+            mongoose: 'Map',
+            typescript: 'Record<string, any>',
+            prisma: 'Json'
+        },
+        BUFFER: {
+            mongoose: 'Buffer',
+            typescript: 'Buffer',
+            prisma: 'Bytes'
         }
     };
 
     const generateMongooseSchema = (table) => `
 // ${table.name} Schema
 const ${table.name}Schema = new mongoose.Schema({
-  ${table.fields.map(field => `${field.name}: {
-    type: ${typeMapping[field.type]?.mongoose || 'String'},
-    required: ${field.required || false}
-  }`).join(',\n  ')}
+  ${table.fields.map(field => {
+        const fieldType = typeMapping[field.type]?.mongoose || 'String';
+        return `${field.name}: {
+    type: ${fieldType}${field.type === 'ARRAY' ? '.of(String)' : ''},
+    required: ${field.required || false}${field.ref ? `,\n    ref: '${field.ref}'` : ''}
+  }`;
+    }).join(',\n  ')}
 }, { 
   timestamps: true,
   versionKey: false 

@@ -1,7 +1,6 @@
 import Navbar from '../components/Navbar'
 
 import { useSelector } from 'react-redux'
-import { addSchema } from '../store/unifiedSchemaSlice'
 import AddBtn from '../components/AddBtn'
 import SchemaCard from '../components/SchemaCard'
 
@@ -12,7 +11,7 @@ const Dashboard = () => {
         <div className="flex flex-col h-screen">
             <Navbar />
             <div className="flex flex-1 overflow-hidden">
-
+               
                 <main className="flex-1 w-full h-full bg-[#fbfbfb] overflow-none">
                     <div className='flex items-start justify-between px-8 py-6'>
                         <div className='flex flex-col items-start gap-2'>

@@ -1,16 +1,39 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { EllipsisVerticalIcon } from '@heroicons/react/16/solid'
-import { WindowIcon, TrashIcon, CloudArrowUpIcon } from '@heroicons/react/24/outline'
+import { WindowIcon, TrashIcon, CloudArrowUpIcon, XCircleIcon } from '@heroicons/react/24/outline'
 import { useState } from 'react'
 import { saveTable, deleteTableAsync } from '../store/unifiedSchemaSlice'
 import { useDispatch, useSelector } from 'react-redux'
+import { DATA_TYPE_OPTIONS } from '../constants/dataTypes'
 
 const Table = ({ tableData }) => {
     const [isOpen, setIsOpen] = useState(false)
     const [tableName, setTableName] = useState(tableData.name)
     const [newField, setNewField] = useState(
-        tableData.fields.length > 0 ? tableData.fields : [{ name: '', type: '' }]
+        tableData.fields.length > 0
+            ? tableData.fields.map(field => ({
+                name: field.name,
+                type: field.type || 'STRING', // Set default type if missing
+                ref: field.ref || '',         // Preserve ref if exists
+                itemType: field.itemType || '' // Preserve itemType if exists
+            }))
+            : [{ name: '', type: 'STRING' }]  // Default type for new field
     );
+
+    // Update fields when tableData changes
+    useEffect(() => {
+        setNewField(
+            tableData.fields.length > 0
+                ? tableData.fields.map(field => ({
+                    name: field.name,
+                    type: field.type || 'STRING',
+                    ref: field.ref || '',
+                    itemType: field.itemType || ''
+                }))
+                : [{ name: '', type: 'STRING' }]
+        );
+        setTableName(tableData.name);
+    }, [tableData]);
 
     const dispatch = useDispatch()
     const activeSchemaId = useSelector(state => state.schemas.activeSchemaId)
@@ -22,7 +45,7 @@ const Table = ({ tableData }) => {
     }
 
     const addField = () => {
-        setNewField([...newField, { name: '', type: '' }])
+        setNewField([...newField, { name: '', type: 'STRING' }]) // Set default type
     }
 
     const handleSave = () => {
@@ -40,6 +63,9 @@ const Table = ({ tableData }) => {
         dispatch(deleteTableAsync(tableData.id))
     }
 
+    const handleDeleteField = (indexToDelete) => {
+        setNewField(newField.filter((_, index) => index !== indexToDelete));
+    };
 
     const handleOpen = () => {
         setIsOpen(!isOpen)
@@ -69,7 +95,7 @@ const Table = ({ tableData }) => {
                 </div>
 
                 {newField.map((field, index) => (
-                    <div key={index} className='flex items-center gap-2 mt-3 '>
+                    <div key={index} className='flex items-center gap-2 mt-3'>
                         <input
                             type="text"
                             value={field.name}
@@ -83,15 +109,44 @@ const Table = ({ tableData }) => {
                             onChange={(e) => handleFieldChange(index, 'type', e.target.value)}
                             className='w-1/2 bg-white border shadow-sm border-gray-200 rounded-md focus:outline-none px-2 p-[4px] text-sm text-gray-700 font'
                         >
-                            <option value="">Select type</option>
-                            <option value="varchar">Varchar</option>
-                            <option value="integer">Integer</option>
-                            <option value="boolean">Boolean</option>
-                            <option value="date">Date</option>
-                            <option value="timestamp">Timestamp</option>
-                            <option value="decimal">Decimal</option>
-                            <option value="text">Text</option>
+                            {DATA_TYPE_OPTIONS.map(option => (
+                                <option key={option.value} value={option.value}>
+                                    {option.label}
+                                </option>
+                            ))}
                         </select>
+
+                        {/* Show ref field if type is OBJECT_ID */}
+                        {field.type === 'OBJECT_ID' && (
+                            <input
+                                type="text"
+                                placeholder="Reference Model"
+                                value={field.ref || ''}
+                                onChange={(e) => handleFieldChange(index, 'ref', e.target.value)}
+                                className="border rounded px-2 py-1 ml-2"
+                            />
+                        )}
+                        {/* Show itemType field if type is ARRAY */}
+                        {field.type === 'ARRAY' && (
+                            <select
+                                value={field.itemType || 'STRING'}
+                                onChange={(e) => handleFieldChange(index, 'itemType', e.target.value)}
+                                className="border rounded px-2 py-1 text-sm"
+                            >
+                                {DATA_TYPE_OPTIONS.filter(opt => opt.value !== 'ARRAY').map(option => (
+                                    <option key={option.value} value={option.value}>
+                                        {option.label}
+                                    </option>
+                                ))}
+                            </select>
+                        )}
+
+                        <button
+                            onClick={() => handleDeleteField(index)}
+                            className="p-1 hover:bg-red-100 rounded-md"
+                        >
+                            <XCircleIcon className="w-4 h-4 text-red-400" />
+                        </button>
                     </div>
                 ))}
 
