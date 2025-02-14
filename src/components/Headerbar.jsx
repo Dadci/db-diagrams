@@ -4,10 +4,12 @@ import { addTable } from '../store/unifiedSchemaSlice'
 import { useParams } from 'react-router-dom'
 import { Position } from '@xyflow/react'
 import CodeModal from './CodeModal'
-import { CodeBracketIcon } from '@heroicons/react/24/outline'
+import { CodeBracketIcon, ArrowDownTrayIcon } from '@heroicons/react/24/outline'
+import ExportDialog from './ExportDialog'
 
-const Headerbar = () => {
+const Headerbar = ({ flowRef }) => {
     const [isCodeModalOpen, setIsCodeModalOpen] = useState(false);
+    const [isExportOpen, setIsExportOpen] = useState(false);
     const { id } = useParams();
     const schema = useSelector(state =>
         state.schemas.schemas.find(s => s.id === id)
@@ -17,7 +19,7 @@ const Headerbar = () => {
 
     const handleAddTable = () => {
         dispatch(addTable({
-            name: 'New Table',
+            position: { x: 100, y: 100 }
         }))
     }
 
@@ -42,21 +44,36 @@ const Headerbar = () => {
                         <h2 className='text-lg font-semibold text-gray-900'>{schema?.title}</h2>
                         <h3 className='text-gray-400 text-sm font-normal'>{schema?.description}</h3>
                     </div>
-                    <button
-                        onClick={() => setIsCodeModalOpen(true)}
-                        className='px-4 py-1.5 bg-indigo-500 border text-sm border-indigo-600 text-white rounded-lg gap-2 hover:bg-indigo-700 transition-colors'
-                    >
-                        <CodeBracketIcon className='w-4 inline-block mr-2'  />
-                        Generate Code
-                    </button>
+                    <div className='flex gap-2'>
+                        <button
+                            onClick={() => setIsExportOpen(true)}
+                            className='px-4 py-1.5 bg-blue-500 border text-sm border-blue-600 text-white rounded-lg gap-2 hover:bg-blue-700 transition-colors'
+                        >
+                            <ArrowDownTrayIcon className='w-4 inline-block mr-2' />
+                            Export
+                        </button>
+                        <button
+                            onClick={() => setIsCodeModalOpen(true)}
+                            className='px-4 py-1.5 bg-indigo-500 border text-sm border-indigo-600 text-white rounded-lg gap-2 hover:bg-indigo-700 transition-colors'
+                        >
+                            <CodeBracketIcon className='w-4 inline-block mr-2' />
+                            Generate Code
+                        </button>
+                    </div>
                 </div>
             </div>
             <CodeModal
                 isOpen={isCodeModalOpen}
                 onClose={() => setIsCodeModalOpen(false)}
             />
+            <ExportDialog
+                isOpen={isExportOpen}
+                onClose={() => setIsExportOpen(false)}
+                schema={schema}
+                flowRef={flowRef}
+            />
         </div>
     );
 };
 
-export default Headerbar
+export default Headerbar;

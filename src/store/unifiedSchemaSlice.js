@@ -1,6 +1,7 @@
 // src/store/unifiedSchemaSlice.js
 
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
+import toast from 'react-hot-toast'
 import { getRandomTailwindColor } from '../utils/getRandomTailwindColor'
 import { calculateTablePosition } from '../utils/calculateTablePosition'
 
@@ -52,12 +53,15 @@ const unifiedSchemaSlice = createSlice({
                 createdAt: new Date().toISOString(),
                 tables: [] // Tables will be stored directly in the schema
             })
+            state.activeSchemaId = action.payload.id
+            toast.success('Schema created successfully!')
         },
         deleteSchema: (state, action) => {
             state.schemas = state.schemas.filter(s => s.id !== action.payload);
             if (state.activeSchemaId === action.payload) {
                 state.activeSchemaId = null;
             }
+            toast.success('Schema deleted successfully!')
         },
         setActiveSchema: (state, action) => {
             state.activeSchemaId = action.payload

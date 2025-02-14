@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { Background, Controls, ReactFlow, useNodesState, useEdgesState, addEdge } from '@xyflow/react';
@@ -17,6 +17,8 @@ const Schema = () => {
     const { id } = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const schemaRef = useRef(null);
+    const flowRef = useRef(null);
 
     const [nodes, setNodes, onNodesChange] = useNodesState([]);
     const [edges, setEdges] = useEdgesState([]);
@@ -95,35 +97,42 @@ const Schema = () => {
     }
 
     return (
-        <div className="flex flex-col h-screen">
-            <Navbar />
-            <Headerbar schema={schema} />
-            <div className="flex flex-1 overflow-hidden">
-                <Sidebar />
-                <main className="flex-1 w-full h-full bg-[#fefefe] overflow-none">
-                    <ReactFlow
-                        nodes={nodes}
-                        edges={edges}
-                        onNodesChange={onNodesChange}
-                        onEdgesChange={onEdgesChange}
-                        onNodeDragStop={onNodeDragStop}
-                        onConnect={onConnect}
-                        nodeTypes={nodeTypes}
-                        fitView
-                        connectOnClick={true}
-                        snapToGrid={true}
-                        defaultEdgeOptions={{
-                            type: 'smoothstep',
-                            animated: true,
-                            style: { stroke: '#666' }
-                        }}
-                    >
-                        <Controls />
-                        <Background variant="dots" color="#aaa" gap={12} />
-                    </ReactFlow>
-                </main>
+        <>
+            <div className="h-screen" ref={schemaRef}>
+                <div className="flex flex-col h-screen">
+                    <Navbar />
+                    <Headerbar schema={schema} flowRef={flowRef} />
+                    <div className="flex flex-1 overflow-hidden">
+                        <Sidebar />
+                        <main
+                            className="flex-1 w-full h-full bg-[#fefefe] overflow-none"
+                            ref={flowRef}
+                        >
+                            <ReactFlow
+                                nodes={nodes}
+                                edges={edges}
+                                onNodesChange={onNodesChange}
+                                onEdgesChange={onEdgesChange}
+                                onNodeDragStop={onNodeDragStop}
+                                onConnect={onConnect}
+                                nodeTypes={nodeTypes}
+                                fitView
+                                connectOnClick={true}
+                                snapToGrid={true}
+                                defaultEdgeOptions={{
+                                    type: 'smoothstep',
+                                    animated: true,
+                                    style: { stroke: '#666' }
+                                }}
+                            >
+                                <Controls />
+                                <Background variant="dots" color="#aaa" gap={12} />
+                            </ReactFlow>
+                        </main>
+                    </div>
+                </div>
             </div>
-        </div>
+        </>
     );
 };
 
