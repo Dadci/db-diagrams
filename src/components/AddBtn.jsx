@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { addSchema } from '../store/schemaSlice'
+import { addSchema } from '../store/unifiedSchemaSlice'
 
 const AddBtn = () => {
   const [isOpen, setIsOpen] = useState(false)

@@ -3,8 +3,11 @@ import { Handle, Position } from '@xyflow/react';
 import { TableCellsIcon } from '@heroicons/react/24/outline';
 import { useSelector } from 'react-redux';
 
-const selectTableById = (state, id) =>
-    state.tables.tables.find(t => t.id === id);
+const selectTableById = (state, id) => {
+    const activeSchemaId = state.schemas.activeSchemaId;
+    const schema = state.schemas.schemas.find(s => s.id === activeSchemaId);
+    return schema?.tables.find(t => t.id === id);
+};
 
 const CustomNode = memo(({ data }) => {
     const table = useSelector(state => selectTableById(state, data.id));

@@ -2,9 +2,7 @@ import React, { useCallback, useEffect, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { Background, Controls, ReactFlow, useNodesState, useEdgesState, addEdge } from '@xyflow/react';
-import { setActiveSchema } from '../store/schemaSlice';
-import { selectTablesBySchemaId, selectSchemaById } from '../store/selectors';
-import  {updateEdges, updateTablePosition}  from '../store/tableSlice'; // Changed import
+import { setActiveSchema, updateEdges, updateTablePosition } from '../store/unifiedSchemaSlice';
 import Navbar from '../components/Navbar';
 import Sidebar from '../components/Sidebar';
 import Headerbar from '../components/Headerbar';
@@ -22,49 +20,55 @@ const Schema = () => {
 
     const [nodes, setNodes, onNodesChange] = useNodesState([]);
     const [edges, setEdges] = useEdgesState([]);
-    const storedEdges = useSelector(state => state.tables.edges);
 
-    const tables = useSelector(state => selectTablesBySchemaId(state, id));
-    const schema = useSelector(state => selectSchemaById(state, id));
+    // Updated selectors with null checks
+    const schema = useSelector(state =>
+        state.schemas.schemas.find(s => s.id === id)
+    );
 
+    const tables = useSelector(state =>
+        state.schemas.schemas.find(s => s.id === id)?.tables || []
+    );
+
+    const storedEdges = useSelector(state => state.schemas.edges || []);
+
+    // Set active schema when component mounts
     useEffect(() => {
         if (id) {
             dispatch(setActiveSchema(id));
         }
-    }, [id, dispatch]);
 
+        // Redirect if schema doesn't exist
+        if (!schema) {
+            navigate('/');
+            return;
+        }
+    }, [id, dispatch, schema, navigate]);
+
+    // Handle edges
     useEffect(() => {
-        if (storedEdges.length > 0) {
+        if (storedEdges?.length > 0) {
             setEdges(storedEdges);
         }
     }, [storedEdges, setEdges]);
 
+    // Create nodes from tables with null check
     const tableNodes = useMemo(() => {
-        if (!tables.length) return [];
-        
-        // Preserve existing nodes positions
-        return tables.map((table) => {
-            const existingNode = nodes.find(node => node.id === table.id);
-            return {
-                id: table.id,
-                type: 'custom',
-                // Use existing node position if available, otherwise use stored position
-                position: existingNode?.position || table.position,
-                data: { ...table },
-                dragHandle: '.drag-handle'
-            };
-        });
-    }, [tables, nodes]);
+        if (!tables) return [];
 
-    // Only update nodes when necessary
+        return tables.map(table => ({
+            id: table.id,
+            type: 'custom',
+            position: table.position || { x: 0, y: 0 },
+            data: { ...table }
+        }));
+    }, [tables]);
+
+    // Update nodes when tables change
     useEffect(() => {
-        setNodes(currentNodes => {
-            const newNode = tableNodes.find(tn => !currentNodes.find(cn => cn.id === tn.id));
-            if (newNode) {
-                return [...currentNodes, newNode];
-            }
-            return currentNodes;
-        });
+        if (tableNodes?.length > 0) {
+            setNodes(tableNodes);
+        }
     }, [tableNodes, setNodes]);
 
     const onNodeDragStop = useCallback((_, node) => {
@@ -75,24 +79,19 @@ const Schema = () => {
     }, [dispatch]);
 
     const onEdgesChange = useCallback((changes) => {
-        setEdges((eds) => {
-            const newEdges = eds;
-            dispatch(updateEdges(newEdges));
-            return newEdges;
-        });
-    }, [dispatch]);
+        const newEdges = applyEdgeChanges(changes, edges);
+        setEdges(newEdges);
+        dispatch(updateEdges(newEdges));
+    }, [edges, setEdges, dispatch]);
 
     const onConnect = useCallback((params) => {
-        setEdges((eds) => {
-            const newEdges = addEdge(params, eds);
-            dispatch(updateEdges(newEdges));
-            return newEdges;
-        });
-    }, [dispatch]);
+        const newEdges = addEdge(params, edges);
+        setEdges(newEdges);
+        dispatch(updateEdges(newEdges));
+    }, [edges, setEdges, dispatch]);
 
     if (!schema) {
-        navigate('/');
-        return null;
+        return <div>Loading...</div>;
     }
 
     return (

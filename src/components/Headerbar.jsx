@@ -1,8 +1,6 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
-import { addTable } from '../store/tableSlice'
-import { useSelector } from 'react-redux'
-import { setActiveSchema } from '../store/schemaSlice'
+import { useDispatch, useSelector } from 'react-redux'
+import { addTable } from '../store/unifiedSchemaSlice'
 import { useParams } from 'react-router-dom'
 import { Position } from '@xyflow/react'
 
@@ -15,18 +13,9 @@ const Headerbar = () => {
     const dispatch = useDispatch()
 
     const handleAddTable = () => {
-       
         dispatch(addTable({
             name: 'New Table',
-           
-        })).unwrap()
-            .then(() => {
-                
-                // Handle success if needed
-            })
-            .catch((error) => {
-                console.error('Failed to add table:', error)
-            })
+        }))
     }
 
     return (

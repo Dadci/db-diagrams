@@ -2,7 +2,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import { WindowIcon, TrashIcon, CloudArrowUpIcon, CircleStackIcon } from '@heroicons/react/24/outline'
 import { useDispatch } from 'react-redux'
-import { deleteSchema } from '../store/schemaSlice'
+import { deleteSchema } from '../store/unifiedSchemaSlice'
 import { deleteTableAsync, deleteAllTables } from '../store/tableSlice'
 
 const SchemaCard = ({ schema }) => {
@@ -16,7 +16,6 @@ const SchemaCard = ({ schema }) => {
     const handleDelete = (e) => {
         e.stopPropagation()
         dispatch(deleteSchema(schema.id))
-        dispatch(deleteAllTables(schema.id))
     }
 
     return (

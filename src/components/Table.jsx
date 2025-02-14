@@ -2,8 +2,8 @@ import React from 'react'
 import { EllipsisVerticalIcon } from '@heroicons/react/16/solid'
 import { WindowIcon, TrashIcon, CloudArrowUpIcon } from '@heroicons/react/24/outline'
 import { useState } from 'react'
-import { addField, saveTable, deleteTableAsync } from '../store/tableSlice'
-import { useDispatch } from 'react-redux'
+import { saveTable, deleteTableAsync } from '../store/unifiedSchemaSlice'
+import { useDispatch, useSelector } from 'react-redux'
 
 const Table = ({ tableData }) => {
     const [isOpen, setIsOpen] = useState(false)
@@ -13,6 +13,7 @@ const Table = ({ tableData }) => {
     );
 
     const dispatch = useDispatch()
+    const activeSchemaId = useSelector(state => state.schemas.activeSchemaId)
 
     const handleFieldChange = (index, field, value) => {
         const updatedFields = [...newField]
