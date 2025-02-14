@@ -23,9 +23,9 @@ const AddBtn = () => {
     <>
       <button
         onClick={() => setIsOpen(true)}
-        className="px-4 py-2 bg-teal-500 text-white rounded-md"
+        className="px-4 py-1.5 bg-teal-500 border border-teal-600 text-sm text-white rounded-lg"
       >
-        New Schema
+        + New Schema
       </button>
 
       {isOpen && (
@@ -61,13 +61,13 @@ const AddBtn = () => {
                 <button
                   type="button"
                   onClick={() => setIsOpen(false)}
-                  className="px-4 py-2 border border-gray-300 rounded-md"
+                  className="px-4 py-1.5 border text-sm border-gray-300 rounded-lg"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-4 py-2 bg-teal-500 text-white rounded-md"
+                  className="px-4 py-1.5 bg-teal-500 text-sm border border-teal-600 text-white rounded-lg"
                 >
                   Create
                 </button>

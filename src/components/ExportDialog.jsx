@@ -116,7 +116,7 @@ const ExportDialog = ({ isOpen, onClose, flowRef, schema }) => {
                     <select
                         value={exportType}
                         onChange={(e) => setExportType(e.target.value)}
-                        className="w-full mb-4 p-2 border rounded"
+                        className="w-full text-sm mb-4 p-2 border rounded"
                     >
                         <option value="png">PNG Image</option>
                         <option value="svg">SVG Vector</option>
@@ -126,13 +126,13 @@ const ExportDialog = ({ isOpen, onClose, flowRef, schema }) => {
                     <div className="flex justify-end gap-2">
                         <button
                             onClick={onClose}
-                            className="px-4 py-2 border rounded hover:bg-gray-100"
+                            className="px-4 py-1.5 text-sm border rounded-lg hover:bg-gray-100"
                         >
                             Cancel
                         </button>
                         <button
                             onClick={handleExport}
-                            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                            className="px-4 py-1.5 bg-blue-500 border border-blue-600 text-sm text-white rounded-lg hover:bg-blue-600"
                         >
                             Export
                         </button>

@@ -32,10 +32,10 @@ const SchemaCard = ({ schema }) => {
             <p className='text-gray-500 text-sm'>{schema.description}</p>
             <div className='flex items-center justify-between w-full'>
                 <div className='flex items-center gap-2'>
-                    <span className='px-2 py-1 text-xs rounded-full font-medium bg-indigo-100 text-gray-600'>
+                    <span className='px-2 py-1 text-xs rounded-full font-semibold bg-indigo-100 text-gray-600'>
                         {new Date(schema.createdAt).toLocaleDateString()}
                     </span>
-                    <span className='px-2 py-1 text-xs rounded-full font-medium bg-teal-100 text-gray-600'>
+                    <span className='px-2 py-1 text-xs rounded-full font-semibold bg-teal-100 text-gray-600'>
                         {schema.tables.length} Tables
                     </span>
                 </div>
