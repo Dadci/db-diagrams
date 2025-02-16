@@ -10,13 +10,13 @@ import { useSelector } from 'react-redux'
 
 
 const navigation = [
-    { name: 'Overview', href: '/', icon: ChartBarIcon },
-    
+    { name: 'Overview', href: '/dashboard', icon: ChartBarIcon },
+
 ]
 
 const Navbar = () => {
 
-   const schemas = useSelector(state => state.schemas.schemas)
+    const schemas = useSelector(state => state.schemas.schemas)
 
     return (
         <nav className="border-b border-gray-200 bg-white">
@@ -44,7 +44,7 @@ const Navbar = () => {
                                     </a>
                                 ))}
                             </div>
-                           
+
                         </div>
                     </div>
 
