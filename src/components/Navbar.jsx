@@ -11,7 +11,7 @@ import { useSelector } from 'react-redux'
 
 const navigation = [
     { name: 'Overview', href: '/', icon: ChartBarIcon },
-    { name: 'Databases', href: '#', icon: CircleStackIcon },
+    
 ]
 
 const Navbar = () => {

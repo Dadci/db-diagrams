@@ -87,7 +87,21 @@ const Schema = () => {
     }, [edges, setEdges, dispatch]);
 
     const onConnect = useCallback((params) => {
-        const newEdges = addEdge(params, edges);
+        // Create a custom edge object with additional information
+        const newEdge = {
+            ...params,
+            id: `${params.source}-${params.sourceHandle}-${params.target}-${params.targetHandle}`,
+            type: 'smoothstep',
+            animated: true,
+            style: { stroke: '#2563eb' }, // Blue color for relationship edges
+            labelStyle: { fill: '#2563eb', fontSize: 12 },
+            markerEnd: {
+                type: 'arrowclosed',
+                color: '#2563eb',
+            },
+        };
+
+        const newEdges = addEdge(newEdge, edges);
         setEdges(newEdges);
         dispatch(updateEdges(newEdges));
     }, [edges, setEdges, dispatch]);
@@ -117,12 +131,12 @@ const Schema = () => {
                                 onConnect={onConnect}
                                 nodeTypes={nodeTypes}
                                 fitView
-                                connectOnClick={true}
+                                connectOnClick={false}
                                 snapToGrid={true}
                                 defaultEdgeOptions={{
                                     type: 'smoothstep',
                                     animated: true,
-                                    style: { stroke: '#666' }
+                                    style: { stroke: '#2563eb' }
                                 }}
                             >
                                 <Controls />

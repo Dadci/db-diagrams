@@ -2,13 +2,15 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import Dashboard from './pages/Dashboard'
 import Schema from './pages/Schema'
 import { Toaster } from 'react-hot-toast';
+import Home from './pages/Home';
 
 const App = () => {
   return (
     <>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Dashboard />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/schema/:id" element={<Schema />} />
         </Routes>
       </BrowserRouter>

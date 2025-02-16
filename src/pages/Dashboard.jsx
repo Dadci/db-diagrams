@@ -38,7 +38,7 @@ const Dashboard = () => {
                             </div>
                         </div>
                     ) : (
-                        <div className='grid grid-cols-6 gap-4 p-6'>
+                        <div className='grid grid-cols-5 gap-4 p-6'>
                             {schemas.map(schema => (
                                 <SchemaCard key={schema.id} schema={schema} />
                             ))}

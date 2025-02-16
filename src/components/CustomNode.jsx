@@ -27,26 +27,42 @@ const CustomNode = memo(({ data }) => {
             </div>
             <div className='p-2 text-sm text-gray-700 bg-white space-y-2'>
                 {table.fields.map((field, index) => (
-                    <div key={index} className='flex items-center justify-between text-sm font-light'>
+                    <div key={index} className='flex items-center justify-between text-sm font-light relative'>
                         <p className='text-gray-700'>{field.name}</p>
                         <p className='text-gray-400'>{field.type}</p>
+
+                        {/* Add handles for relationship fields (OBJECT_ID type) */}
+                        {field.type === 'OBJECT_ID' && (
+                            <>
+                                <Handle
+                                    id={`${field.name}-source`}
+                                    type="source"
+                                    position={Position.Right}
+                                    className="!bg-blue-500 !w-2 !h-2 !border-2 !border-white"
+                                    style={{
+                                        top: '50%',
+                                        right: -20,
+                                        transform: 'translateY(-50%)',
+                                        zIndex: 1
+                                    }}
+                                />
+                                <Handle
+                                    id={`${field.name}-target`}
+                                    type="target"
+                                    position={Position.Left}
+                                    className="!bg-blue-500 !w-2 !h-2 !border-2 !border-white"
+                                    style={{
+                                        top: '50%',
+                                        left: -20,
+                                        transform: 'translateY(-50%)',
+                                        zIndex: 1
+                                    }}
+                                />
+                            </>
+                        )}
                     </div>
                 ))}
             </div>
-            <Handle
-                type="target"
-                position={Position.Left}
-                className="!bg-gray-500 !w-3 !h-3 !border-2 !border-white"
-                isValidConnection={(connection) => true}
-                style={{ zIndex: 1 }}
-            />
-            <Handle
-                type="source"
-                position={Position.Right}
-                className="!bg-gray-500 !w-3 !h-3 !border-2 !border-white"
-                isValidConnection={(connection) => true}
-                style={{ zIndex: 1 }}
-            />
         </div>
     );
 });
